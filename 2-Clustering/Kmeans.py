@@ -4,10 +4,12 @@ import numpy as np
 from scipy.spatial.distance import cdist 
 from sklearn.datasets import load_digits
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import silhouette_samples
 import matplotlib.pyplot as plt
+import pandas as pd
  
 #Defining our kmeans function from scratch
 def KMeans_scratch(x,k, no_of_iterations):
@@ -65,16 +67,33 @@ def plot_samples(projected, labels, title):
  
 def main():
     #Load dataset Digits
-    digits = load_digits()
-    show_digitsdataset(digits)
+    #digits = load_digits()
+    #show_digitsdataset(digits)
+    names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
+    features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
+    input_file = '0-Datasets/TCGA_InfoWithGrade.csv'
+    target = 'Grade'
+    df = pd.read_csv(input_file,         # Nome do arquivo com dados
+                     names = names,      # Nome das colunas 
+                     usecols = features, # Define as colunas que serão  utilizadas
+                     na_values='?')      # Define que ? será considerado valores ausentes
     
+    df_original = df.copy()
+
+    x = df.loc[:, features].values
+    y = df.loc[:,[target]].values
+
+    x = StandardScaler().fit_transform(x)
+    normalizedDf = pd.DataFrame(data = x, columns = features)
+    normalizedDf = pd.concat([normalizedDf, df[[target]]], axis = 1)
+
     #Transform the data using PCA
     pca = PCA(2)
-    projected = pca.fit_transform(digits.data)
+    projected = pca.fit_transform(x)
     print(pca.explained_variance_ratio_)
-    print(digits.data.shape)
+    print(df_original._data.shape)
     print(projected.shape)    
-    plot_samples(projected, digits.target, 'Original Labels')
+    #plot_samples(projected, df_original.target, 'Original Labels')
  
     #Applying our kmeans function from scratch
     labels = KMeans_scratch(projected,6,5)

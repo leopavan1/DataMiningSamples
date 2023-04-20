@@ -3,10 +3,10 @@ import numpy as np
 
 def main():
     # Faz a leitura do arquivo
-    names = ['BI-RADS','Age','Shape','Margin','Density','Severity'] 
-    features = ['Age','Shape','Margin','Density','Severity']
-    output_file = '0-Datasets/MamoClear.data'
-    input_file = '0-Datasets/Mamo.data'
+    names = ['Grade','Project','Case_ID','Gender','Age_at_diagnosis','Primary_Diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
+    features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
+    output_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
+    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all.csv'
     df = pd.read_csv(input_file,         # Nome do arquivo com dados
                      names = names,      # Nome das colunas 
                      usecols = features, # Define as colunas que serão  utilizadas
