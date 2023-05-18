@@ -9,11 +9,9 @@ def convert_age_to_years(age):
             years = int(parts[0])
             days = int(parts[2])
             total_years = years + days / 365
-            return round(total_years, 2)
-        elif len(parts) == 2:
-            years = int(parts[0])
-            return years
+            return round(total_years, 1)
     return math.nan
+
 
 def main():
     # Faz a leitura do arquivo
@@ -47,31 +45,6 @@ def main():
     print(df.isnull().sum())
     print("\n")    
    
-    # Converte dados categóricos em numéricos
-    df['Age_at_diagnosis'] = df['Age_at_diagnosis'].apply(convert_age_to_years)
-    df['Grade'].replace({'LGG': 0, 'GBM': 1}, inplace=True)
-    df['Gender'].replace({'Male': 0, 'Female': 1}, inplace=True)
-    df['Race'].replace({'white': 0, 'black or african american': 1, 'asian': 2, 'american indian or alaska native': 3}, inplace=True)
-    df['IDH1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['TP53'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['ATRX'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['PTEN'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['EGFR'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['CIC'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['MUC16'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['PIK3CA'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['NF1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['PIK3R1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['FUBP1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['RB1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['NOTCH1'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['BCOR'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['CSMD3'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['SMARCA4'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['GRIN2A'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['IDH2'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['FAT4'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
-    df['PDGFRA'].replace({'NOT_MUTATED': 0, 'MUTATED': 1}, inplace=True)
        
     columns_missing_value = df.columns[df.isnull().any()]
     print(columns_missing_value)
@@ -111,4 +84,4 @@ def UpdateMissingValues(df, column, method="mode", number=0):
         df.dropna(subset=[column], inplace=True)
 
 if __name__ == "__main__":
-    main()
+    main()    

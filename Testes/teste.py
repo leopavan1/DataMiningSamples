@@ -7,7 +7,7 @@ def main():
 
     names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
     features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
-    input_file = '0-Datasets/TCGA_InfoWithGrade.csv'
+    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
     target = 'Grade'
     df = pd.read_csv(input_file,         # Nome do arquivo com dados
                      names = names,      # Nome das colunas 
