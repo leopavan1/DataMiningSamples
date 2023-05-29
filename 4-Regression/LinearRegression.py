@@ -5,14 +5,19 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 
 # carrega os dados
-house_data = load_boston()
-X = house_data['data']
-y = house_data['target']
-df = pd.DataFrame(data=house_data.data, columns=house_data.feature_names)
+input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
+names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
+features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
+target = 'Grade'
+df = pd.read_csv(input_file, names=names, usecols=features, na_values=['--', 'not reported'])
+
+X = df.loc[:, features].values
+y = df.loc[:,[target]].values
+
 print(df.head())
 
 # separa em set de treino e teste
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 regr = LinearRegression()
 regr.fit(X_train, y_train)

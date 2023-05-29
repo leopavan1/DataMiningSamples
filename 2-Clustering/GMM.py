@@ -11,18 +11,6 @@ from sklearn.metrics import silhouette_samples
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def show_digitsdataset(digits):
-    fig = plt.figure(figsize=(6, 6))  # figure size in inches
-    fig.subplots_adjust(left=0, right=1, bottom=0, top=1, hspace=0.05, wspace=0.05)
-
-    for i in range(64):
-        ax = fig.add_subplot(8, 8, i + 1, xticks=[], yticks=[])
-        ax.imshow(digits.images[i], cmap=plt.cm.binary, interpolation='nearest')
-        # label the image with the target value
-        ax.text(0, 7, str(digits.target[i]))
-
-    #fig.show()
-
 def plot_samples(projected, labels, title):    
     fig = plt.figure()
     u_labels = np.unique(labels)
@@ -35,9 +23,7 @@ def plot_samples(projected, labels, title):
     plt.title(title)
 
 def main():
-    #Load dataset Digits
-    #digits = load_digits()
-    #show_digitsdataset(digits)
+    #Abre o Dataset
     names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
     features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
     input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'

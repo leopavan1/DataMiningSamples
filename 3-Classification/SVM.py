@@ -46,31 +46,19 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')    
 
-def load_dataset(dataset='cancer'):        
-    if dataset == 'iris':
-        # Load iris data and store in dataframe
-        iris = datasets.load_iris()
-        names = iris.target_names
-        df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-        df['target'] = iris.target
-    elif dataset == 'cancer':
-        # Load cancer data and store in dataframe
-        cancer = datasets.load_breast_cancer()
-        names = cancer.target_names
-        df = pd.DataFrame(data=cancer.data, columns=cancer.feature_names)
-        df['target'] = cancer.target
-    
-    print(df.head())
-    return names, df
-
-
 def main():
     #load dataset
-    target_names, df = load_dataset('iris')
+    names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
+    features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
+    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
+    df = pd.read_csv(input_file,         # Nome do arquivo com dados
+                     names = names,      # Nome das colunas 
+                     usecols = features, # Define as colunas que serão utilizadas
+                     na_values=['--', 'not reported'])      # Define que ? será considerado valores ausentes
 
     # Separate X and y data
-    X = df.drop('target', axis=1)
-    y = df.target   
+    X = df.drop('Grade', axis=1)
+    y = df['Grade']
     print("Total samples: {}".format(X.shape[0]))
 
     # Split the data - 75% train, 25% test
@@ -97,7 +85,7 @@ def main():
     # predict using test dataset
     y_hat_test = svm.predict(X_test)
 
-     # Get test accuracy score
+    # Get test accuracy score
     accuracy = accuracy_score(y_test, y_hat_test)*100
     f1 = f1_score(y_test, y_hat_test,average='macro')
     print("Acurracy SVM from sk-learn: {:.2f}%".format(accuracy))
@@ -105,10 +93,9 @@ def main():
 
     # Get test confusion matrix    
     cm = confusion_matrix(y_test, y_hat_test)        
-    plot_confusion_matrix(cm, target_names, False, "Confusion Matrix - SVM sklearn")      
-    plot_confusion_matrix(cm, target_names, True, "Confusion Matrix - SVM sklearn normalized" )  
+    plot_confusion_matrix(cm, df['Grade'].unique(), False, "Confusion Matrix - SVM sklearn")      
+    plot_confusion_matrix(cm, df['Grade'].unique(), True, "Confusion Matrix - SVM sklearn normalized" )  
     plt.show()
-
 
 if __name__ == "__main__":
     main()
