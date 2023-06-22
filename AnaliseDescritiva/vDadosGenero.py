@@ -14,7 +14,7 @@ def main():
 
 
     label = ['Masculino','Feminino']
-    cores = ['r','b']
+    cores = ['b','pink']
     Masculino = df['Gender'].value_counts()[0]
     Feminino = df['Gender'].value_counts()[1]
     total = Masculino + Feminino

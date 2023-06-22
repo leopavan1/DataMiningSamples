@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_predict
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -42,7 +42,7 @@ def plot_confusion_matrix(cm, classes,
     plt.xlabel('Predicted label')  
 
 def main():
-    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
+    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_Balanced.csv'
     names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
     features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
     target = 'Grade'
@@ -61,7 +61,7 @@ def main():
     
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    clf = DecisionTreeClassifier(max_leaf_nodes=3)
+    clf = DecisionTreeClassifier(max_leaf_nodes=10)
     clf.fit(X_train, y_train)
     
     predictions = clf.predict(X_test)
@@ -85,6 +85,34 @@ def main():
     print('Precision:', precision)
     print('Recall:', recall)
     print('F1-score:', f1)
+    
+    # Perform cross-validation
+    predictions_cv = cross_val_predict(clf, X, y, cv=5)
+
+    # Cálculo da matriz de confusão para cada iteração da validação cruzada
+    cm_cv = confusion_matrix(y, predictions_cv)
+    print('Confusion Matrix - Cross-Validation:')
+    print(cm_cv)
+
+    # Cálculo das métricas para cada iteração da validação cruzada
+    accuracy_cv = accuracy_score(y, predictions_cv)
+    precision_cv = precision_score(y, predictions_cv, average='weighted')
+    recall_cv = recall_score(y, predictions_cv, average='weighted')
+    f1_cv = f1_score(y, predictions_cv, average='weighted')
+
+    # Print cross-validation scores
+    print('Cross-Validation Accuracy:', accuracy_cv)
+    print('Cross-Validation Precision:', precision_cv)
+    print('Cross-Validation Recall:', recall_cv)
+    print('Cross-Validation F1-score:', f1_cv)
+
+    # Plot bar chart of cross-validation scores
+    plt.figure()
+    plt.bar(range(1, 6), [accuracy_cv] * 5)
+    plt.xlabel('Fold')
+    plt.ylabel('Accuracy')
+    plt.title('Cross-Validation Scores')
+    plt.show()
     
     plt.figure(figsize=(8, 6))
     plot_tree(clf)

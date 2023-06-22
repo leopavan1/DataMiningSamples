@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.datasets import load_boston 
 from sklearn.linear_model import LinearRegression 
 from sklearn.metrics import mean_absolute_error
@@ -11,10 +12,8 @@ features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTE
 target = 'Grade'
 df = pd.read_csv(input_file, names=names, usecols=features, na_values=['--', 'not reported'])
 
-X = df.loc[:, features].values
+X = df.loc[:, ['TP53']].values
 y = df.loc[:,[target]].values
-
-print(df.head())
 
 # separa em set de treino e teste
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -29,4 +28,13 @@ print('R2 no set de teste: %.2f' % r2_test)
 
 y_pred = regr.predict(X_test)
 abs_error = mean_absolute_error(y_pred, y_test)
-print('Erro absoluto no set de treino: %.2f' % abs_error)
+print('Erro absoluto no set de teste: %.2f' % abs_error)
+
+# Plotagem dos pontos de dados e reta de regressão estimada
+plt.scatter(X_test[:, 0], y_test, color='blue', label='Dados de teste')
+plt.plot(X_test[:, 0], y_pred, color='red', linewidth=2, label='Reta de regressão')
+plt.xlabel('TP53')
+plt.ylabel('Grade')
+plt.title('Regressão Linear')
+plt.legend()
+plt.show()

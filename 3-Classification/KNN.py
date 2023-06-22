@@ -96,7 +96,7 @@ def plot_confusion_matrix(cm, classes,
 def main():
     names = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA'] 
     features = ['Grade','Gender','Age_at_diagnosis','Race','IDH1','TP53','ATRX','PTEN','EGFR','CIC','MUC16','PIK3CA','NF1','PIK3R1','FUBP1','RB1','NOTCH1','BCOR','CSMD3','SMARCA4','GRIN2A','IDH2','FAT4','PDGFRA']
-    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_all_Clear.csv'
+    input_file = '0-Datasets/TCGA_GBM_LGG_Mutations_Balanced.csv'
     target = 'Grade'
     df = pd.read_csv(input_file,         # Nome do arquivo com dados
                      names = names,      # Nome das colunas 
@@ -109,8 +109,8 @@ def main():
    
     print("Total samples: {}".format(X.shape[0]))
 
-    # Split the data - 75% train, 25% test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1)
+    # Split the data - 70% train, 30% test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     print("Total train samples: {}".format(X_train.shape[0]))
     print("Total test  samples: {}".format(X_test.shape[0]))
 
@@ -121,7 +121,7 @@ def main():
         
     # STEP 1 - TESTS USING knn classifier write from scratch    
     # Make predictions on test dataset using knn classifier
-    y_hat_test = knn_predict(X_train, X_test, y_train, y_test, k=5, p=2)
+    y_hat_test = knn_predict(X_train, X_test, y_train, y_test, k=7, p=2)
 
     # Get test accuracy score
     accuracy = accuracy_score(y_test, y_hat_test)*100
@@ -130,7 +130,7 @@ def main():
     print("F1 Score K-NN from scratch: {:.2f}%".format(f1))
     
     # STEP 2 - TESTS USING knn classifier from sk-learn
-    knn = KNeighborsClassifier(n_neighbors=5)
+    knn = KNeighborsClassifier(n_neighbors=7)
     knn.fit(X_train, y_train)
     y_hat_test = knn.predict(X_test)
 

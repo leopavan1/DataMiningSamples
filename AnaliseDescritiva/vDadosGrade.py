@@ -14,7 +14,7 @@ def main():
 
 
     label = ['LGG','GBM']
-    cores = ['r','b']
+    cores = ['g','orange']
     LGG = df['Grade'].value_counts()[0]
     GBM = df['Grade'].value_counts()[1]
     total = LGG + GBM
